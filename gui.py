@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QApplication
 
 class GUI(QWidget):
 
-    __STATIC_ADDRESS = "http://www.onet.pl"
+    __STATIC_ADDRESS = "http://192.168.0.101:5000/"#tu trzeba zmienic
 
     def __init__(self):
         super().__init__()
@@ -21,15 +21,19 @@ class GUI(QWidget):
             self.close()
         if e.key() == Qt.Key_W:
             print("W")
-            print(GUI.ping(self,""))
+            self.ping("forward")
         if e.key() == Qt.Key_S:
             print("S")
+            self.ping("backward")
         if e.key() == Qt.Key_A:
             print("A")
+            self.ping("left")
         if e.key() == Qt.Key_D:
             print("D")
+            self.ping("right")
         if e.key() == Qt.Key_Space:
             print("Space")
+            self.ping("camera")
 
     def ping(self, command):
         html = urlopen(self.__STATIC_ADDRESS + command)
