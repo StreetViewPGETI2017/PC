@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QApplication
 
 class GUI(QWidget):
 
-    __STATIC_ADDRESS = "http://192.168.0.101:5000/"#tu trzeba zmienic
+    __STATIC_ADDRESS = "http://192.168.43.37:5000/"#tu trzeba zmienic
 
     def __init__(self):
         super().__init__()
@@ -36,9 +36,12 @@ class GUI(QWidget):
             self.ping("camera")
 
     def ping(self, command):
-        html = urlopen(self.__STATIC_ADDRESS + command)
+        try:
+            html = urlopen(self.__STATIC_ADDRESS + command)
+        except Exception as err:
+            print(err)
 
-        return html.read()
+        #return html.read()
 
 
 if __name__ == '__main__':
