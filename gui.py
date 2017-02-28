@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.request import urlopen
+import sys
 import icons_rc
 
 class Ui_Dialog(object):
@@ -11,28 +12,7 @@ class Ui_Dialog(object):
                         print(self.__STATIC_ADDRESS + command)
                 except Exception as err:
                         print("error" + err)
-
-                        # return html.read()
-        ##########################keyPressEvent###############################
-        # def keyPressEvent(self, e):
-        #         if e.key() == Qt.Key_Escape:
-        #                 self.close()
-        #         if e.key() == Qt.Key_W:
-        #                 print("W")
-        #                 self.ping("forward")
-        #         if e.key() == Qt.Key_S:
-        #                 print("S")
-        #                 self.ping("backward")
-        #         if e.key() == Qt.Key_A:
-        #                 print("A")
-        #                 self.ping("left")
-        #         if e.key() == Qt.Key_D:
-        #                 print("D")
-        #                 self.ping("right")
-        #         if e.key() == Qt.Key_Space:
-        #                 print("Space")
-        #                 self.ping("camera")
-        #######################do pingu##################################3
+        #######################do pingu##################################
         def runup(self):
                 self.ping("/forward")
         def rundown(self):
@@ -75,7 +55,6 @@ class Ui_Dialog(object):
                 _translate = QtCore.QCoreApplication.translate
                 Dialog.setWindowTitle(_translate("Dialog", "StreetView"))
 
-
         def setUpFrame(self, Dialog, name, geometry):
             frame = QtWidgets.QFrame(Dialog)
             frame.setGeometry(QtCore.QRect(geometry[0], geometry[1], geometry[2], geometry[3]))
@@ -93,18 +72,12 @@ class Ui_Dialog(object):
             button.setIcon(icon)
             button.setIconSize(QtCore.QSize(size[0], size[1]))
             button.setObjectName(name)
-
             return button
 
-
-
-
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
-
