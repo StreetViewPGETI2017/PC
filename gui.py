@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.request import urlopen
+import icons_rc
 
 class Ui_Dialog(object):
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
@@ -47,121 +48,42 @@ class Ui_Dialog(object):
         def setupUi(self, Dialog):
                 Dialog.setObjectName("Dialog")
                 Dialog.resize(757, 350)
-                Dialog.setStyleSheet("QDialog{\n"
-        "    background: #616263;\n"
-        "}\n"
-        "\n"
-        "QPushButton{\n"
-        "    border:none;\n"
-        "    background-color:transparent;\n"
-        "}\n"
-        "\n"
-        "QPushButton:hover{\n"
-        "    background: #727374;\n"
-        "    border-radius: 10px;\n"
-        "}\n"
-        "\n"
-        "QFrame{\n"
-        "        border:10px dotted gray;\n"
-        "}\n"
-        "QLabel{\n"
-        "    border:none;\n"
-        "color:white;\n"
-        "font-size:15px;\n"
-        "}")
-                self.frame = QtWidgets.QFrame(Dialog)
-                self.frame.setGeometry(QtCore.QRect(10, 20, 471, 301))
-                self.frame.setAutoFillBackground(False)
-                self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-                self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-                self.frame.setObjectName("frame")
-                self.up = QtWidgets.QPushButton(self.frame)
-                self.up.setGeometry(QtCore.QRect(170, 20, 121, 121))
-                self.up.setStyleSheet("")
-                self.up.setText("")
-                icon = QtGui.QIcon()
-                icon.addPixmap(QtGui.QPixmap(":/images/up.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                self.up.setIcon(icon)
-                self.up.setIconSize(QtCore.QSize(100, 100))
-                self.up.setObjectName("up")
-                self.down = QtWidgets.QPushButton(self.frame)
-                self.down.setGeometry(QtCore.QRect(170, 160, 121, 121))
-                self.down.setStyleSheet("")
-                self.down.setText("")
-                icon1 = QtGui.QIcon()
-                icon1.addPixmap(QtGui.QPixmap(":/images/down.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                self.down.setIcon(icon1)
-                self.down.setIconSize(QtCore.QSize(100, 100))
-                self.down.setObjectName("down")
-                self.left = QtWidgets.QPushButton(self.frame)
-                self.left.setGeometry(QtCore.QRect(40, 90, 121, 121))
-                self.left.setText("")
-                icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap(":/images/left.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                self.left.setIcon(icon2)
-                self.left.setIconSize(QtCore.QSize(100, 100))
-                self.left.setObjectName("left")
-                self.right = QtWidgets.QPushButton(self.frame)
-                self.right.setGeometry(QtCore.QRect(300, 100, 121, 121))
-                self.right.setText("")
-                icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap(":/images/right.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                self.right.setIcon(icon3)
-                self.right.setIconSize(QtCore.QSize(100, 100))
-                self.right.setObjectName("right")
-                self.frame_2 = QtWidgets.QFrame(Dialog)
-                self.frame_2.setGeometry(QtCore.QRect(500, 20, 231, 211))
-                self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-                self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-                self.frame_2.setObjectName("frame_2")
-                self.camera = QtWidgets.QPushButton(self.frame_2)
-                self.camera.setGeometry(QtCore.QRect(20, 30, 191, 151))
+                style = open('style.css','r')
+                Dialog.setStyleSheet(style.read())
+
+                frame = self.setUpFrame(Dialog, "frame", (10, 20, 471, 301))
+                frame_2 = self.setUpFrame(Dialog, "frame_2", (500, 20, 231, 211))
+
+                up = self.setUpButton(frame, "up", (170, 20, 121, 121))
+                down = self.setUpButton(frame, "down", (170, 160, 121, 121))
+                left = self.setUpButton(frame, "left", (40, 90, 121, 121))
+                right = self.setUpButton(frame, "right", (300, 100, 121, 121))
+                camera = self.setUpButton(frame_2, "camera", (20, 30, 191, 151), (130,128))
+
                 palette = QtGui.QPalette()
                 brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
                 brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
                 palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-                self.camera.setPalette(palette)
-                self.camera.setStyleSheet("")
-                self.camera.setText("")
-                icon4 = QtGui.QIcon()
-                icon4.addPixmap(QtGui.QPixmap(":/images/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                self.camera.setIcon(icon4)
-                self.camera.setIconSize(QtCore.QSize(130, 128))
-                self.camera.setCheckable(False)
-                self.camera.setAutoRepeat(False)
-                self.camera.setAutoExclusive(False)
-                self.camera.setObjectName("camera")
+
+                camera.setPalette(palette)
+                camera.setCheckable(False)
+                camera.setAutoRepeat(False)
+                camera.setAutoExclusive(False)
 
                 ############################EVENT##############################################################################
-                self.up.clicked.connect(self.runup)
-                self.down.clicked.connect(self.rundown)
-                self.left.clicked.connect(self.runleft)
-                self.right.clicked.connect(self.runright)
-                self.camera.clicked.connect(self.runcamera)
+                up.clicked.connect(self.runup)
+                down.clicked.connect(self.rundown)
+                left.clicked.connect(self.runleft)
+                right.clicked.connect(self.runright)
+                camera.clicked.connect(self.runcamera)
                 ###############################################################################################################
 
                 self.retranslateUi(Dialog)
@@ -172,7 +94,28 @@ class Ui_Dialog(object):
                 Dialog.setWindowTitle(_translate("Dialog", "StreetView"))
 
 
-import icons_rc
+        def setUpFrame(self, Dialog, name, geometry):
+            frame = QtWidgets.QFrame(Dialog)
+            frame.setGeometry(QtCore.QRect(geometry[0], geometry[1], geometry[2], geometry[3]))
+            frame.setAutoFillBackground(False)
+            frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+            frame.setFrameShadow(QtWidgets.QFrame.Raised)
+            frame.setObjectName(name)
+            return frame
+
+        def setUpButton(self, frame, name, geometry, size = (100,100)):
+            button = QtWidgets.QPushButton(frame)
+            button.setGeometry(QtCore.QRect(geometry[0], geometry[1], geometry[2], geometry[3]))
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/images/"+name+".png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            button.setIcon(icon)
+            button.setIconSize(QtCore.QSize(size[0], size[1]))
+            button.setObjectName(name)
+
+            return button
+
+
+
 
 if __name__ == "__main__":
     import sys
