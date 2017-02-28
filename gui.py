@@ -60,24 +60,6 @@ class Ui_Dialog(object):
                 right = self.setUpButton(frame, "right", (300, 100, 121, 121))
                 camera = self.setUpButton(frame_2, "camera", (20, 30, 191, 151), (130,128))
 
-                palette = QtGui.QPalette()
-                brush = QtGui.QBrush(QtGui.QColor(0, 0, 0, 0))
-                brush.setStyle(QtCore.Qt.SolidPattern)
-                palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-                palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-                palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-                palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-                palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-                palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-                palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-                palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-                palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-
-                camera.setPalette(palette)
-                camera.setCheckable(False)
-                camera.setAutoRepeat(False)
-                camera.setAutoExclusive(False)
-
                 ############################EVENT##############################################################################
                 up.clicked.connect(self.runup)
                 down.clicked.connect(self.rundown)
