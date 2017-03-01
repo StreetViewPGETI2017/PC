@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from urllib.request import urlopen
-import sys
+from urllib.request import urlopen, urlretrieve
+import sys, time, os
 import icons_rc
 
 class Ui_Dialog(object):
@@ -10,6 +10,7 @@ class Ui_Dialog(object):
                 try:
                         html = urlopen(self.__STATIC_ADDRESS + command)
                         print(self.__STATIC_ADDRESS + command)
+                        return html
                 except Exception as err:
                         print("error" + err)
         #######################do pingu##################################
@@ -22,7 +23,12 @@ class Ui_Dialog(object):
         def runright(self):
                 self.ping("/right")
         def runcamera(self):
-                self.ping("/camera")
+                time.sleep(1)
+                number = 1
+                #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
+                urlretrieve(self.__STATIC_ADDRESS + "/static/test.jpg", "photo.jpg" ) #<-path
+
+
         ######################################################################
 
         def setupUi(self, Dialog):
