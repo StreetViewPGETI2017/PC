@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.request import urlopen, urlretrieve
 import sys, time, os
 import icons_rc
+import subprocess
 
 class Ui_Dialog(object):
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
@@ -22,6 +23,11 @@ class Ui_Dialog(object):
                 self.ping("/left")
         def runright(self):
                 self.ping("/right")
+        def autoMove(self):
+                self.ping("/auto")
+        def viewPhoto(self):
+                print('test')
+                subprocess.Popen("view.py 1", shell=True)
         def runcamera(self):
                 time.sleep(1)
                 number = 1
@@ -33,18 +39,28 @@ class Ui_Dialog(object):
 
         def setupUi(self, Dialog):
                 Dialog.setObjectName("Dialog")
-                Dialog.resize(757, 350)
+                Dialog.resize(550, 371)
                 style = open('style.css','r')
                 Dialog.setStyleSheet(style.read())
 
-                frame = self.setUpFrame(Dialog, "frame", (10, 20, 471, 301))
-                frame_2 = self.setUpFrame(Dialog, "frame_2", (500, 20, 231, 211))
+                frame = self.setUpFrame(Dialog, "frame", (10, 10, 241, 341))
+                frame_2 = self.setUpFrame(Dialog, "frame_2", (270, 10, 261, 341))
 
-                up = self.setUpButton(frame, "up", (170, 20, 121, 121))
-                down = self.setUpButton(frame, "down", (170, 160, 121, 121))
-                left = self.setUpButton(frame, "left", (40, 90, 121, 121))
-                right = self.setUpButton(frame, "right", (300, 100, 121, 121))
-                camera = self.setUpButton(frame_2, "camera", (20, 30, 191, 151), (130,128))
+                up = self.setUpButton(frame, "up", (80, 20, 81, 71))
+                down = self.setUpButton(frame, "down", (80, 150, 81, 71))
+                left = self.setUpButton(frame, "left", (10, 80, 81, 81))
+                right = self.setUpButton(frame, "right", (150, 80, 81, 71))
+                camera = self.setUpButton(frame_2, "camera", (40, 40, 191, 151), (130,128))
+
+                self.auto_2 = QtWidgets.QPushButton(frame)
+                self.auto_2.setGeometry(QtCore.QRect(30, 240, 181, 61))
+                self.auto_2.setObjectName("auto_2")
+                self.viewPhotos = QtWidgets.QPushButton(frame_2)
+                self.viewPhotos.setGeometry(QtCore.QRect(20, 240, 221, 61))
+                self.viewPhotos.setObjectName("viewPhotos")
+
+                self.auto_2.clicked.connect(self.autoMove)
+                self.viewPhotos.clicked.connect(self.viewPhoto)
 
                 ############################EVENT##############################################################################
                 up.clicked.connect(self.runup)
@@ -60,6 +76,8 @@ class Ui_Dialog(object):
         def retranslateUi(self, Dialog):
                 _translate = QtCore.QCoreApplication.translate
                 Dialog.setWindowTitle(_translate("Dialog", "StreetView"))
+                self.auto_2.setText(_translate("Dialog", "AUTO"))
+                self.viewPhotos.setText(_translate("Dialog", "VIEW"))
 
         def setUpFrame(self, Dialog, name, geometry):
             frame = QtWidgets.QFrame(Dialog)
@@ -70,7 +88,7 @@ class Ui_Dialog(object):
             frame.setObjectName(name)
             return frame
 
-        def setUpButton(self, frame, name, geometry, size = (100,100)):
+        def setUpButton(self, frame, name, geometry, size = (60,60)):
             button = QtWidgets.QPushButton(frame)
             button.setGeometry(QtCore.QRect(geometry[0], geometry[1], geometry[2], geometry[3]))
             icon = QtGui.QIcon()
