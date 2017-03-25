@@ -3,7 +3,7 @@ from urllib.request import urlopen, urlretrieve
 import sys, time, os
 import icons_rc
 import subprocess
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 
 class Ui_Dialog(object):
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
@@ -13,13 +13,15 @@ class Ui_Dialog(object):
                         html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)
                         print(self.__STATIC_ADDRESS + command)
                         return html
+                except (HTTPError, URLError)  as error:
+                    print (error)
                 except:
-                    print ("erorr")
+                    print("duzy error")
         #######################do pingu##################################
         def runup(self):
                 self.ping("/forward")
         def rundown(self):
-                self.ping("/backward")
+                self.ping("/backwards")
         def runleft(self):
                 self.ping("/left")
         def runright(self):
