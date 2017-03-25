@@ -10,7 +10,7 @@ class Ui_Dialog(object):
 
         def ping(self, command):
                 try:
-                        html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)
+                        html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)#trzeba potestowac jaki timeout bedzie ok
                         print(self.__STATIC_ADDRESS + command)
                         return html
                 except (HTTPError, URLError)  as error:
@@ -21,7 +21,7 @@ class Ui_Dialog(object):
         def runup(self):
                 self.ping("/forward")
         def rundown(self):
-                self.ping("/backwards")
+                self.ping("/backward")
         def runleft(self):
                 self.ping("/left")
         def runright(self):
