@@ -3,17 +3,18 @@ from urllib.request import urlopen, urlretrieve
 import sys, time, os
 import icons_rc
 import subprocess
+from urllib.error import HTTPError
 
 class Ui_Dialog(object):
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
 
         def ping(self, command):
                 try:
-                        html = urlopen(self.__STATIC_ADDRESS + command)
+                        html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)
                         print(self.__STATIC_ADDRESS + command)
                         return html
-                except Exception as err:
-                        print("error" + err)
+                except:
+                    print ("erorr")
         #######################do pingu##################################
         def runup(self):
                 self.ping("/forward")
