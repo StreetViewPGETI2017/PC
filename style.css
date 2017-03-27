@@ -17,15 +17,20 @@ QLabel{
        color:white;
         font-size:15px;
 }
-#viewPhotos,#auto_2{
+#stop,
+#streetV,
+#viewPhotos,
+#auto_2{
 font-size:30px;
   background: #d93434;
   background-image: linear-gradient(to bottom, #d93434, #990b0b);
   border-radius: 16px;
   color: #ffffff;
 }
-
-#viewPhotos:hover,#auto_2:hover {
+#stop:hover,
+#streetV:hover,
+#viewPhotos:hover,
+#auto_2:hover {
   background: #ff6161;
   background-image: linear-gradient(to bottom, #ff6161, #c94949);
   text-decoration: none;

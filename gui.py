@@ -28,9 +28,14 @@ class Ui_Dialog(object):
                 self.ping("/right")
         def autoMove(self):
                 self.ping("/auto")
+        def autoStop(self):
+                self.ping("/stopauto")
         def viewPhoto(self):
-                print('test')
                 subprocess.Popen("view.py 1", shell=True)
+
+        def viewStreetGUI(self):
+                print('test')
+                # subprocess.Popen("streetViewGui.py 1", shell=True)
         def runcamera(self):
                 time.sleep(1)
                 number = 1
@@ -42,29 +47,41 @@ class Ui_Dialog(object):
 
         def setupUi(self, Dialog):
                 Dialog.setObjectName("Dialog")
-                Dialog.resize(550, 371)
+                Dialog.resize(550, 492)
                 style = open('style.css','r')
                 Dialog.setStyleSheet(style.read())
 
-                frame = self.setUpFrame(Dialog, "frame", (10, 10, 241, 341))
-                frame_2 = self.setUpFrame(Dialog, "frame_2", (270, 10, 261, 341))
+                frame = self.setUpFrame(Dialog, "frame", (10, 10, 241, 461))
+                frame_2 = self.setUpFrame(Dialog, "frame_2", (270, 10, 261, 271))
+                frame_3 = self.setUpFrame(Dialog, "frame_3", (270, 290, 261, 181))
 
                 up = self.setUpButton(frame, "up", (80, 20, 81, 71))
                 down = self.setUpButton(frame, "down", (80, 150, 81, 71))
                 left = self.setUpButton(frame, "left", (10, 80, 81, 81))
                 right = self.setUpButton(frame, "right", (150, 80, 81, 71))
-                camera = self.setUpButton(frame_2, "camera", (40, 40, 191, 151), (130,128))
+                camera = self.setUpButton(frame_2, "camera", (30, 20, 191, 151), (130,128))
 
                 self.auto_2 = QtWidgets.QPushButton(frame)
-                self.auto_2.setGeometry(QtCore.QRect(30, 240, 181, 61))
+                self.auto_2.setGeometry(QtCore.QRect(30, 260, 181, 61))
                 self.auto_2.setObjectName("auto_2")
                 self.viewPhotos = QtWidgets.QPushButton(frame_2)
-                self.viewPhotos.setGeometry(QtCore.QRect(20, 240, 221, 61))
+                self.viewPhotos.setGeometry(QtCore.QRect(20, 180, 221, 61))
                 self.viewPhotos.setObjectName("viewPhotos")
+                self.streetV = QtWidgets.QPushButton(frame_3)
+                self.streetV.setGeometry(QtCore.QRect(30, 30, 211, 111))
+                self.streetV.setObjectName("streetV")
+                self.stop = QtWidgets.QPushButton(frame)
+                self.stop.setGeometry(QtCore.QRect(30, 360, 181, 61))
+                self.stop.setObjectName("stop")
+
+
+
+
 
                 self.auto_2.clicked.connect(self.autoMove)
                 self.viewPhotos.clicked.connect(self.viewPhoto)
-
+                self.streetV.clicked.connect(self.viewStreetGUI)
+                self.stop.clicked.connect(self.autoStop)
                 ############################EVENT##############################################################################
                 up.clicked.connect(self.runup)
                 down.clicked.connect(self.rundown)
@@ -81,6 +98,8 @@ class Ui_Dialog(object):
                 Dialog.setWindowTitle(_translate("Dialog", "StreetView"))
                 self.auto_2.setText(_translate("Dialog", "AUTO"))
                 self.viewPhotos.setText(_translate("Dialog", "VIEW"))
+                self.streetV.setText(_translate("Dialog", "StreetView"))
+                self.stop.setText(_translate("Dialog", "STOP"))
 
         def setUpFrame(self, Dialog, name, geometry):
             frame = QtWidgets.QFrame(Dialog)
