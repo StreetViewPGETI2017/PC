@@ -1,6 +1,6 @@
 import numpy as np
 import imutils
-import cv2wrap
+import cv2wrap as cv2
 
 class Sticher:
     def __init__(self):
@@ -12,7 +12,7 @@ class Sticher:
     def detect(self, image):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         descriptor = cv2.xfeatures2d.Shift_create()
-        k, features = descriptor.detectAndCompute(image, none)
+        k, features = descriptor.detectAndCompute(image)
 
         k = np.float32([kp.pt for kp in k])
 
