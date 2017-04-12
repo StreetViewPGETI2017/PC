@@ -1,20 +1,39 @@
 import numpy as np
 import imutils
-import cv2wrap as cv2
-#nie testowane
+import cv2
+import argparse
 
-class Sticher:
+
+#############################
+#trzeba przetestować
+#############################
+
+class Stitcher:
     def __init__(self):
         self.isv3 = imutils.is_cv3()
 
-    def stich(self, images):
-        image11, image10, image9, image8, image7, image6, image5, image4, image3, image2, image1, image0 = images #w liście zdjęcia od lewej do prawej
+    def stitch(self, images):
+        image2, image1 = images #w liście zdjęcia od lewej do prawej
+        kp1, features1 = self.detect(image1)
+        kp2, features2 = self.detect(image2)
+
+        M = self.match(kp1, kp2, features1, features2, 0.75, 4.0)
+
+        if M == None:
+            return None
+
+        (matches, H, status) = M
+        result = cv2.warpPerspective(image1, H,(image1.shape[1] + image2.shape[1], image1.shape[0]))
+        result[0:image2.shape[0], 0:image2.shape[1]] = image2
+
+        return result
 
     def detect(self, image):
         #wykrywanie punktów charakterystycznych
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        descriptor = cv2.xfeatures2d.Shift_create()
-        k, features = descriptor.detectAndCompute(image)
+
+        descriptor = cv2.xfeatures2d.SIFT_create()
+        (k, features) = descriptor.detectAndCompute(image, None)
 
         k = np.float32([kp.pt for kp in k])
 
@@ -38,3 +57,15 @@ class Sticher:
             return matches, H, status
 
         return None
+
+
+
+imageA = cv2.imread("test2.jpg")
+imageB = cv2.imread("test2.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+stitcher = Stitcher()
+result = stitcher.stitch([imageA, imageB])
+cv2.imshow("Result", result)
+
