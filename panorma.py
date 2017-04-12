@@ -40,8 +40,8 @@ class Stitcher:
         return k, features
 
     def match(self, kpA, kpB, featureA, featureB, ratio, reproj):
-        matcher = cv2.DescriptionMatcher_cerate("Bruteforce")
-        rawmatches = matcher.knnMatch(featureA, featureB, 2)
+        matcher = cv2.BFMatcher()
+        rawmatches = matcher.knnMatch(featureA, featureB, k = 2)
         matches = []
 
         for  m in rawmatches:
@@ -61,11 +61,58 @@ class Stitcher:
 
 
 imageA = cv2.imread("test2.jpg")
-imageB = cv2.imread("test2.jpg")
+imageB = cv2.imread("test1.jpg")
 imageA = imutils.resize(imageA, width=400)
 imageB = imutils.resize(imageB, width=400)
 
 stitcher = Stitcher()
-result = stitcher.stitch([imageA, imageB])
-cv2.imshow("Result", result)
+result1 = stitcher.stitch([imageA, imageB])
+#cv2.imshow("Result", result1)
+
+imageA = cv2.imread("test3.jpg")
+imageB = cv2.imread("test4.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+result2 = stitcher.stitch([imageA, imageB])
+
+
+imageA = cv2.imread("test5.jpg")
+imageB = cv2.imread("test6.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+result3 = stitcher.stitch([imageA, imageB])
+
+
+imageA = cv2.imread("test7.jpg")
+imageB = cv2.imread("test8.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+result4 = stitcher.stitch([imageA, imageB])
+
+
+imageA = cv2.imread("test9.jpg")
+imageB = cv2.imread("test10.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+result5 = stitcher.stitch([imageA, imageB])
+
+
+imageA = cv2.imread("test12.jpg")
+imageB = cv2.imread("test11.jpg")
+imageA = imutils.resize(imageA, width=400)
+imageB = imutils.resize(imageB, width=400)
+
+result6 = stitcher.stitch([imageA, imageB])
+
+
+result7 = stitcher.stitch([result1, result6])
+result8 = stitcher.stitch([result3, result2])
+#result9 = stitcher.stitch([result5, result4])
+cv2.imshow("Result", result8)
+cv2.imwrite("result.jpg", result7)
+cv2.waitKey(0)
 
