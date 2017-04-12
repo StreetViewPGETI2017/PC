@@ -4,9 +4,6 @@ import cv2
 import argparse
 
 
-#############################
-#trzeba przetestować
-#############################
 
 class Stitcher:
     def __init__(self):
@@ -58,7 +55,7 @@ class Stitcher:
 
         return None
 
-
+#do testów
 
 imageA = cv2.imread("test2.jpg")
 imageB = cv2.imread("test1.jpg")
