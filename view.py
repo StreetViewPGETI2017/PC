@@ -11,29 +11,35 @@ class App(QWidget):
 
 
         self.title = 'View'
-        self.left = 250
-        self.top = 250
-        self.width = 640
-        self.height = 1480
+
+        # polozenie okienka na okranie
+        self.left = 100
+        self.top = 100
+
+        # rozmiar okna
+        self.width = 1300
+        self.height = 500
         self.initUI()
 
 
     def initUI(self):
         self.setWindowTitle(self.title)
-
-
         self.setGeometry(self.left, self.top, self.width, self.height)
 
         # Create widget
-        width = 1300;
-        height= 500;
         label = QLabel(self)
+        # czytanie zdjecia
         pixmap = QPixmap('exl.jpg')
-        pixmap = pixmap.scaled(width,height)
+        # zmiana rozmiaru zdjecia do wielkosci okna
+        pixmap = pixmap.scaled(self.width,self.height)
+
         # pixmap = pixmap.scaledToWidth(width)
         # pixmap = pixmap.scaledToHeight(height)
+
+        # dodanie zdjecia do label
         label.setPixmap(pixmap)
-        self.resize(width, height)
+
+        # self.resize(self.width, self.height)
 
         self.show()
 
