@@ -21,6 +21,7 @@ class Stitcher:
             return None
 
         matches, H, status = M
+        #sklejanie
         result = cv2.warpPerspective(image1, H,(image1.shape[1] + image2.shape[1], image1.shape[0]))
         result[0:image2.shape[0], 0:image2.shape[1]] = image2
 
@@ -42,12 +43,13 @@ class Stitcher:
 
         return result
 #dołączanie kolejnych zdjęć do pierwszego
-    def stitchOneByOne(self, images):
+    def stitch1(self, images):
         result = self.stitch((images[0],images[1]))
         for i in range(len(images) - 2):
             result = self.stitch((result, images[i + 2])) # po pierwszym result = none, jak wyżej, spróbować z gęstściej robionymi zdjęciami
         return result
-#ta funkcja jest nie dokończona, teoretycznie powinna być lepsza
+#ta funkcja teoretycznie powinna być lepsza, nie mam pewności czy to przez liczbę zdjęć czy jakiś błąd
+#dopasowuje do siebie ostatni dołączony obraz do kolejnego, a następnie go dołącza do już połączonych zdjęć
     def stitch2(self, images):
         ks = []
         features = []
@@ -78,6 +80,7 @@ class Stitcher:
 
         return k, features
 
+#dopasowanie obrazów
     def match(self, kpA, kpB, featureA, featureB, ratio, reproj):
         matcher = cv2.BFMatcher()
         rawmatches = matcher.knnMatch(featureA, featureB, k = 2)
