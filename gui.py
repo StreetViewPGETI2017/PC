@@ -3,13 +3,25 @@ from urllib.request import urlopen, urlretrieve
 import sys, time, os
 import subprocess
 from urllib.error import HTTPError, URLError
+from panorma import stitch
+
 # pobranie ikon
 import icons_rc
+
+
 
 class Ui_Dialog(object):
         # adres serwera
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
 
+        def __init__(self):
+            self.ilosc_zdjec = 8
+            self.numer_punktu = 1
+
+
+        def ilosc_zdjec_f(self):
+            ilosc = self.ilosc_zdjec
+            return ilosc
         def ping(self, command):
                 try:
                         html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)#trzeba potestowac jaki timeout bedzie ok
@@ -56,18 +68,24 @@ class Ui_Dialog(object):
 
         # uruchomienie kamerki, zczytywanie zdjec
         def runcamera(self):
-                # number - ilosc zdjec
-                number = 15
-                # zczytywanie zdjec
-                for i in range(1,number+1,1):
-                #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
-                    time.sleep(1)
-                    # print(self.__STATIC_ADDRESS + "/static/photo" + str(i))
-                    # print("E:/photos/photo" + str(i) + ".jpg")
 
-                    # czytamy zdjecia o nazwie photo1,photo2 .... photo15 - do ewentualnej zmiany
-                    # zapis do folderu img - do zmiany na sciezke dysku zewn.
-                    urlretrieve(self.__STATIC_ADDRESS + "/static/photo" + str(i) + ".jpg", "img/photo" + str(i) + ".jpg" ) #<-path
+            # zczytywanie zdjec
+            for i in range(0,self.ilosc_zdjec+1,1):
+            #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
+                time.sleep(1)
+                # print(self.__STATIC_ADDRESS + "/static/photo" + str(i))
+                # print("E:/photos/photo" + str(i) + ".jpg")
+
+                # czytamy zdjecia o nazwie photo1,photo2 .... photo15 - do ewentualnej zmiany
+                # zapis do folderu img - do zmiany na sciezke dysku zewn.
+                urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+            # po wczytaniu zdjec sklejamy
+            time.sleep(1)
+            stitch(self.ilosc_zdjec,self.numer_punktu)
+            self.numer_punktu=self.numer_punktu+1
+            # wyswietlamy wynik (to samo co ViewPhoto)
+            subprocess.Popen("view.py", shell=True)
+
 
 
         ######################################################################
