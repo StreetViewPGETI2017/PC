@@ -1,13 +1,14 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from urllib.request import urlopen, urlretrieve
-import sys, time, os
+import os
 import subprocess
+import sys
+import time
+from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.error import HTTPError, URLError
-from panorma import stitch
+from urllib.request import urlopen, urlretrieve
+import webbrowser
 
-# pobranie ikon
-import icons_rc
-
+from images import icons_rc
+from stitch_images import stitch
 
 
 class Ui_Dialog(object):
@@ -60,11 +61,11 @@ class Ui_Dialog(object):
 
         # podglad zdjecia po sklejaniu, uruchomienie nowego skryptu odpowiedzialnego za wyswietlenie
         def viewPhoto(self):
-                subprocess.Popen("view.py 1", shell=True)
+            subprocess.Popen("view.py 1", shell=True)
         # test
         def viewStreetGUI(self):
-                print('test')
-                # subprocess.Popen("streetViewGui.py 1", shell=True)
+            os.system('cd ' + os.getcwd() + '/../streetView && npm install && npm start')
+            webbrowser.open('http://localhost:8081/vr/')
 
         # uruchomienie kamerki, zczytywanie zdjec
         def runcamera(self):
@@ -95,7 +96,7 @@ class Ui_Dialog(object):
                 # rozmiar okna
                 Dialog.resize(550, 492)
                 # style okna CSS
-                style = open('style.css','r')
+                style = open('../style/style.css','r')
                 Dialog.setStyleSheet(style.read())
 
                 # tworzenie ramek na przyciski
