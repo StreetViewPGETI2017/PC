@@ -5,7 +5,7 @@ def stitch(ilosc_zdjec,number_resoult):
     images=[]
 
     for i in range(0,ilosc_zdjec+1):
-        images.append(cv2.imread("img/"+str(i)+".jpg"))
+        images.append(cv2.imread("../img/"+str(i)+".jpg"))
 
     for i in range(0,ilosc_zdjec+1):
         images[i] = images[i][:, int(0.1296296296 * images[i].shape[1]):int(0.8703703704 * images[i].shape[1])]
@@ -26,7 +26,7 @@ def stitch(ilosc_zdjec,number_resoult):
     result = np.concatenate((result, blackIm), axis=0)
     result = np.concatenate((blackIm, result), axis=0)
 
-    cv2.imwrite("result"+str(number_resoult)+".jpg", result)
+    cv2.imwrite("streetView/static_assets/result"+str(number_resoult)+".jpg", result)
     cv2.imwrite("result_last.jpg", result)
     # cv2.showImage(result)
 

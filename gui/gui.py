@@ -16,7 +16,7 @@ class Ui_Dialog(object):
         __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
 
         def __init__(self):
-            self.ilosc_zdjec = 8
+            self.ilosc_zdjec = 9
             self.numer_punktu = 1
 
 
@@ -71,7 +71,7 @@ class Ui_Dialog(object):
         def runcamera(self):
 
             # zczytywanie zdjec
-            for i in range(0,self.ilosc_zdjec+1,1):
+            for i in range(0,self.ilosc_zdjec-1,1):
             #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
                 time.sleep(1)
                 # print(self.__STATIC_ADDRESS + "/static/photo" + str(i))
@@ -82,7 +82,7 @@ class Ui_Dialog(object):
                 urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
             # po wczytaniu zdjec sklejamy
             time.sleep(1)
-            stitch(self.ilosc_zdjec,self.numer_punktu)
+            stitch(self.ilosc_zdjec-1,self.numer_punktu)
             self.numer_punktu=self.numer_punktu+1
             # wyswietlamy wynik (to samo co ViewPhoto)
             subprocess.Popen("view.py", shell=True)
