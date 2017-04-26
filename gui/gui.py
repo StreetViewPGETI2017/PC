@@ -19,10 +19,10 @@ class Ui_Dialog(object):
             self.ilosc_zdjec = 9
             self.numer_punktu = 1
 
-
         def ilosc_zdjec_f(self):
             ilosc = self.ilosc_zdjec
             return ilosc
+
         def ping(self, command):
                 try:
                         html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)#trzeba potestowac jaki timeout bedzie ok
@@ -64,7 +64,6 @@ class Ui_Dialog(object):
             subprocess.Popen("view.py 1", shell=True)
         # test
         def viewStreetGUI(self):
-            os.system('cd ' + os.getcwd() + '/../streetView && npm install && npm start')
             webbrowser.open('http://localhost:8081/vr/')
 
         # uruchomienie kamerki, zczytywanie zdjec
@@ -175,6 +174,10 @@ class Ui_Dialog(object):
             return button
 
 if __name__ == "__main__":
+    try:
+        subprocess.Popen('cd ' + os.getcwd() + '/../streetView && npm install && npm start', shell=True)
+    except Exception as err:
+        print(err)
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
