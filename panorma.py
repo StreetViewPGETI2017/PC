@@ -3,6 +3,7 @@ import cv2
 
 def stitch(ilosc_zdjec,number_resoult):
     images=[]
+
     for i in range(0,ilosc_zdjec+1):
         images.append(cv2.imread("img/"+str(i)+".jpg"))
 
@@ -17,8 +18,20 @@ def stitch(ilosc_zdjec,number_resoult):
         else:
             result = np.concatenate((result, images[i+1]), axis=1)
 
+    x = result.shape[1]
+    y = (x - result.shape[0])/2
+
+    blackIm = create_blank(x,y)
+
+    result = np.concatenate((result, blackIm), axis=0)
+    result = np.concatenate((blackIm, result), axis=0)
+
     cv2.imwrite("result"+str(number_resoult)+".jpg", result)
     cv2.imwrite("result_last.jpg", result)
     # cv2.showImage(result)
 
-
+def create_blank(width, height, rgb_color=(0, 0, 0)):
+    image = np.zeros((height, width, 3), np.uint8)
+    color = tuple(reversed(rgb_color))
+    image[:] = color
+    return image
