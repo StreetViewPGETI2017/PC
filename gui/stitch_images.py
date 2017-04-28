@@ -2,20 +2,27 @@ import numpy as np
 import cv2
 
 def stitch(ilosc_zdjec,number_resoult):
+
     images=[]
-
     for i in range(0,ilosc_zdjec+1):
-        images.append(cv2.imread("../img/"+str(i)+".jpg"))
-
-    for i in range(0,ilosc_zdjec+1):
-        images[i] = images[i][:, int(0.1296296296 * images[i].shape[1]):int(0.8703703704 * images[i].shape[1])]
-
-    result = images[0]
-
-    for i in range(0,ilosc_zdjec):
-        if i == 0:
-            result = np.concatenate((images[i], images[i+1]), axis=1)
+        image = cv2.imread("../img/"+str(i)+".jpg")
+        if image:
+            images.append(image)
         else:
+            print('brak zdjec - sklejanie jest niemozliwe')
+            return
+
+
+
+    for i in range(0,ilosc_zdjec+1):
+        try:
+            images[i] = images[i][:, int(0.1296296296 * images[i].shape[1]):int(0.8703703704 * images[i].shape[1])]
+        except Exception as err:
+            print(err)
+
+    result = np.concatenate((images[0], images[1]), axis=1)
+
+    for i in range(1,ilosc_zdjec):
             result = np.concatenate((result, images[i+1]), axis=1)
 
     x = result.shape[1]

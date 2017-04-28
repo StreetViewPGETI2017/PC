@@ -6,16 +6,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
 import webbrowser
+from view import View
 
 from images import icons_rc
 from stitch_images import stitch
 
-
-class Ui_Dialog(object):
-        # adres serwera
-        __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
+class Ui_Dialog():
 
         def __init__(self):
+            # adres serwera
+            self.__STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 9
             self.numer_punktu = 1
 
@@ -31,7 +31,7 @@ class Ui_Dialog(object):
                 except (HTTPError, URLError)  as error:
                     print (error)
                 except:
-                    print("duzy error")
+                    print("raspberry nie odpowiada :(")
         #######################do pingu##################################
         # wysyłanie pingu na serwer
 
@@ -61,7 +61,9 @@ class Ui_Dialog(object):
 
         # podglad zdjecia po sklejaniu, uruchomienie nowego skryptu odpowiedzialnego za wyswietlenie
         def viewPhoto(self):
-            subprocess.Popen("view.py 1", shell=True)
+            self.view = View()
+
+
         # test
         def viewStreetGUI(self):
             webbrowser.open('http://localhost:8081/vr/')
@@ -78,13 +80,17 @@ class Ui_Dialog(object):
 
                 # czytamy zdjecia o nazwie photo1,photo2 .... photo15 - do ewentualnej zmiany
                 # zapis do folderu img - do zmiany na sciezke dysku zewn.
-                urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+                try:
+                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+                except:
+                    print('raspberry nie odpowiada')
+                    #return
             # po wczytaniu zdjec sklejamy
             time.sleep(1)
             stitch(self.ilosc_zdjec-1,self.numer_punktu)
             self.numer_punktu=self.numer_punktu+1
             # wyswietlamy wynik (to samo co ViewPhoto)
-            subprocess.Popen("view.py", shell=True)
+            self.view = View()
 
 
 

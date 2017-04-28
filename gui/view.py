@@ -1,9 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-from PyQt5.QtGui import  QPixmap
+from PyQt5 import QtGui, QtWidgets
 
 
-class App(QWidget):
+class View(QtWidgets.QWidget):
 
 
     def __init__(self):
@@ -27,9 +26,9 @@ class App(QWidget):
         self.setGeometry(self.left, self.top, self.width, self.height)
 
         # Create widget
-        label = QLabel(self)
+        label = QtWidgets.QLabel(self)
         # czytanie zdjecia
-        pixmap = QPixmap('exl.jpg')
+        pixmap = QtGui.QPixmap('exl.jpg')
         # zmiana rozmiaru zdjecia do wielkosci okna
         pixmap = pixmap.scaled(self.width,self.height)
 
@@ -44,6 +43,6 @@ class App(QWidget):
         self.show()
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
+    app = QtWidgets.QApplication(sys.argv)
+    ex = View()
     sys.exit(app.exec_())
