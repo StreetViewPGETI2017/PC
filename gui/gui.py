@@ -1,27 +1,28 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from urllib.request import urlopen, urlretrieve
-import sys, time, os
+import os
 import subprocess
+import sys
+import time
+from PyQt5 import QtCore, QtGui, QtWidgets
 from urllib.error import HTTPError, URLError
-from panorma import stitch
+from urllib.request import urlopen, urlretrieve
+import webbrowser
+from view import View
 
-# pobranie ikon
-import icons_rc
+from images import icons_rc
+from stitch_images import stitch
 
-
-
-class Ui_Dialog(object):
-        # adres serwera
-        __STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
+class Ui_Dialog():
 
         def __init__(self):
-            self.ilosc_zdjec = 8
+            # adres serwera
+            self.__STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
+            self.ilosc_zdjec = 9
             self.numer_punktu = 1
-
 
         def ilosc_zdjec_f(self):
             ilosc = self.ilosc_zdjec
             return ilosc
+
         def ping(self, command):
                 try:
                         html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)#trzeba potestowac jaki timeout bedzie ok
@@ -30,7 +31,7 @@ class Ui_Dialog(object):
                 except (HTTPError, URLError)  as error:
                     print (error)
                 except:
-                    print("duzy error")
+                    print("raspberry nie odpowiada :(")
         #######################do pingu##################################
         # wysyłanie pingu na serwer
 
@@ -60,17 +61,18 @@ class Ui_Dialog(object):
 
         # podglad zdjecia po sklejaniu, uruchomienie nowego skryptu odpowiedzialnego za wyswietlenie
         def viewPhoto(self):
-                subprocess.Popen("view.py 1", shell=True)
+            self.view = View()
+
+
         # test
         def viewStreetGUI(self):
-                print('test')
-                # subprocess.Popen("streetViewGui.py 1", shell=True)
+            webbrowser.open('http://localhost:8081/vr/')
 
         # uruchomienie kamerki, zczytywanie zdjec
         def runcamera(self):
 
             # zczytywanie zdjec
-            for i in range(0,self.ilosc_zdjec+1,1):
+            for i in range(0,self.ilosc_zdjec-1,1):
             #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
                 time.sleep(1)
                 # print(self.__STATIC_ADDRESS + "/static/photo" + str(i))
@@ -78,13 +80,17 @@ class Ui_Dialog(object):
 
                 # czytamy zdjecia o nazwie photo1,photo2 .... photo15 - do ewentualnej zmiany
                 # zapis do folderu img - do zmiany na sciezke dysku zewn.
-                urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+                try:
+                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+                except:
+                    print('raspberry nie odpowiada')
+                    #return
             # po wczytaniu zdjec sklejamy
             time.sleep(1)
-            stitch(self.ilosc_zdjec,self.numer_punktu)
+            stitch(self.ilosc_zdjec-1,self.numer_punktu)
             self.numer_punktu=self.numer_punktu+1
             # wyswietlamy wynik (to samo co ViewPhoto)
-            subprocess.Popen("view.py", shell=True)
+            self.view = View()
 
 
 
@@ -95,7 +101,7 @@ class Ui_Dialog(object):
                 # rozmiar okna
                 Dialog.resize(550, 492)
                 # style okna CSS
-                style = open('style.css','r')
+                style = open('../style/style.css','r')
                 Dialog.setStyleSheet(style.read())
 
                 # tworzenie ramek na przyciski
@@ -174,6 +180,10 @@ class Ui_Dialog(object):
             return button
 
 if __name__ == "__main__":
+    try:
+        subprocess.Popen('cd ' + os.getcwd() + '/../streetView && npm install && npm start', shell=True)
+    except Exception as err:
+        print(err)
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()

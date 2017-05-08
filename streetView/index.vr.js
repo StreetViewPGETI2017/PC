@@ -14,23 +14,23 @@ import {
 export default class streetView extends React.Component {
     constructor(){
         super();
-        this.state = {image:2};
+        this.state = {image:1};
         this.styles = StyleSheet.create({ 
             menu: { flex: 1, 
                    flexDirection: 'column', 
                    width: 1, 
                    alignItems: 'stretch', 
-                   transform: [{translate: [0, 3, -5]}], 
+                   transform: [{translate: [0, 0, -5]}],
             },button: { 
                 margin: 0.05, 
                 height: 0.4, 
                 backgroundColor: 'red', 
-                transform: [{translate: [0, 3, -5]}], 
+                transform: [{translate: [0, 0, -5]}],
             },button2: { 
                 margin: 0.05, 
                 height: 0.4, 
                 backgroundColor: 'green', 
-                transform: [{translate: [0, 3, 5]},{rotateY : -180}],
+                transform: [{translate: [0, 0, 5]},{rotateY : -180}],
                 
             }, text: { 
                 fontSize: 0.3, 
@@ -64,7 +64,7 @@ export default class streetView extends React.Component {
   render() {
     return (
             <View>
-        <Pano source={asset(`${this.state.image}.jpg`)}/>
+        <Pano source={asset(`result${this.state.image}.jpg`)}/>
 
                 <VrButton style={this.styles.button} 
                 onClick={() => this.moveForward()}> 
