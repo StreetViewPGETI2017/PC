@@ -33,7 +33,7 @@ def stitch(ilosc_zdjec,number_resoult):
     result = np.concatenate((result, blackIm), axis=0)
     result = np.concatenate((blackIm, result), axis=0)
 
-    cv2.imwrite("streetView/static_assets/result"+str(number_resoult)+".jpg", result)
+    cv2.imwrite("streetView/vr/static_assets/result"+str(number_resoult)+".jpg", result)
     cv2.imwrite("result_last.jpg", result)
     # cv2.showImage(result)
 
