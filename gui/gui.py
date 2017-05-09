@@ -2,11 +2,12 @@ import os
 import subprocess
 import sys
 import time
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
 import webbrowser
 from view import View
+
 
 from images import icons_rc
 from stitch_images import stitch
@@ -64,9 +65,11 @@ class Ui_Dialog():
             self.view = View()
 
 
-        # test
+        # odpalanie streetView
         def viewStreetGUI(self):
-            webbrowser.open('http://localhost:8081/vr/')
+            self.browser = QtWebEngineWidgets.QWebEngineView()
+            self.browser.load(QtCore.QUrl.fromLocalFile(os.getcwd()[:-os.getcwd()[::-1].find('\\')] + 'streetView\\vr\\index.html'))
+            self.browser.show()
 
         # uruchomienie kamerki, zczytywanie zdjec
         def runcamera(self):
@@ -180,10 +183,6 @@ class Ui_Dialog():
             return button
 
 if __name__ == "__main__":
-    try:
-        subprocess.Popen('cd ' + os.getcwd() + '/../streetView && npm install && npm start', shell=True)
-    except Exception as err:
-        print(err)
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
