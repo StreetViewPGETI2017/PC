@@ -68,7 +68,7 @@ class Ui_Dialog():
         # odpalanie streetView
         def viewStreetGUI(self):
             self.browser = QtWebEngineWidgets.QWebEngineView()
-            self.browser.load(QtCore.QUrl.fromLocalFile(os.getcwd()[:-os.getcwd()[::-1].find('\\')] + 'streetView\\vr\\index.html'))
+            self.browser.load(QtCore.QUrl.fromLocalFile(os.getcwd()[:-os.getcwd()[::-1].find('\\')] + 'streetViewProd\\index.html'))
             self.browser.show()
 
         # uruchomienie kamerki, zczytywanie zdjec
