@@ -59,7 +59,6 @@ class Ui_Dialog():
         def autoMove(self):
                 threading.Thread(target=self.camera_auto).start()
                 self.ping("/auto")
-                return
 
         # koniec jazdy automatycznej
         def autoStop(self):
