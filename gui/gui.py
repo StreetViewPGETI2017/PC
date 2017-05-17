@@ -8,10 +8,63 @@ from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
 import webbrowser
 # from view import View
-
+import numpy as np
+import cv2 #pakiet opencv-python
 
 from images import icons_rc
 from stitch_images import stitch
+
+class stitchImages():
+
+    def stitch(self,ilosc_zdjec,number_resoult):
+
+        ile = (360 / (ilosc_zdjec + 1))/ 54
+        lewy = (1 - ile)/ 2
+        prawy = 1 - lewy
+
+        images=[]
+        for i in range(0,ilosc_zdjec+1):
+            image = cv2.imread("../img/"+str(i)+".jpg")
+            if image is None:
+                print('brak zdjec - sklejanie jest niemozliwe')
+                return
+            else:
+                images.append(image)
+
+        for i in range(0,ilosc_zdjec-1):
+            try:
+                #images[i] = images[i][:, int(0.1296296296 * images[i].shape[1]):int(0.8703703704 * images[i].shape[1])]
+                images[i] = images[i][:, int(lewy * images[i].shape[1]):int(prawy * images[i].shape[1])]
+            except Exception as err:
+                print(err)
+
+        result = np.concatenate((images[0], images[1]), axis=1)
+
+        for i in range(1,ilosc_zdjec):
+            try:
+                result = np.concatenate((result, images[i+1]), axis=1)
+
+            except Exception as err:
+                print(err)
+
+        x = result.shape[1]
+        y = (x - result.shape[0])/4
+
+        blackIm = self.create_blank(x,y)
+
+        result = np.concatenate((result, blackIm), axis=0)
+        result = np.concatenate((blackIm, result), axis=0)
+        result = cv2.resize(result,(3432,1732), interpolation = cv2.INTER_CUBIC)
+        cv2.imwrite("../streetViewProd/static_assets/result"+str(number_resoult)+".jpg", result)
+        cv2.imwrite("result_last.jpg", result)
+        print("Sklejono: "+str(number_resoult))
+        # cv2.showImage(result)
+
+    def create_blank(self, width, height, rgb_color=(0, 0, 0)):
+        image = np.zeros((int(height), int(width), 3), np.uint8)
+        color = tuple(reversed(rgb_color))
+        image[:] = color
+        return image
 
 class Ui_Dialog():
 
@@ -20,6 +73,7 @@ class Ui_Dialog():
             self.__STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 9
             self.numer_punktu = 0
+            self.sklejacz = stitchImages()
 
         def ilosc_zdjec_f(self):
             ilosc = self.ilosc_zdjec
@@ -97,7 +151,7 @@ class Ui_Dialog():
                     #return
             # po wczytaniu zdjec sklejamy
             self.numer_punktu = self.numer_punktu + 1
-            stitch(self.ilosc_zdjec - 1, self.numer_punktu)
+            self.sklejacz.stitch(self.ilosc_zdjec - 1, self.numer_punktu)
 
             # wyswietlamy wynik (to samo co ViewPhoto)
             # self.view = View()
