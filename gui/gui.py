@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
 import webbrowser
-from view import View
+# from view import View
 
 
 from images import icons_rc
@@ -62,8 +62,11 @@ class Ui_Dialog():
 
         # podglad zdjecia po sklejaniu, uruchomienie nowego skryptu odpowiedzialnego za wyswietlenie
         def viewPhoto(self):
-            self.view = View()
-
+            # self.view = View()
+            self.browser = QtWebEngineWidgets.QWebEngineView()
+            self.browser.load(
+                QtCore.QUrl.fromLocalFile(os.getcwd()[:-os.getcwd()[::-1].find('\\')] + 'streetViewProd\\index.html'))
+            self.browser.show()
 
         # odpalanie streetView
         def viewStreetGUI(self):
