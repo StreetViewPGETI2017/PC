@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-def stitch(ilosc_zdjec,number_resoult):
+def stitch(ilosc_zdjec, number_resoult):
 
     ile = (360 / (ilosc_zdjec + 1))/ 54
     lewy = (1 - ile)/ 2

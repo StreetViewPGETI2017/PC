@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import time
+import threading
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
@@ -18,7 +19,7 @@ class Ui_Dialog():
             # adres serwera
             self.__STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 9
-            self.numer_punktu = 1
+            self.numer_punktu = 0
 
         def ilosc_zdjec_f(self):
             ilosc = self.ilosc_zdjec
@@ -28,11 +29,13 @@ class Ui_Dialog():
                 try:
                         html = urlopen(self.__STATIC_ADDRESS + command, timeout = 1)#trzeba potestowac jaki timeout bedzie ok
                         print(self.__STATIC_ADDRESS + command)
-                        return html
+                        return html.read()
                 except (HTTPError, URLError)  as error:
                     print (error)
+                    return 0
                 except:
                     print("raspberry nie odpowiada :(")
+                    return 0
         #######################do pingu##################################
         # wysyłanie pingu na serwer
 
@@ -54,7 +57,9 @@ class Ui_Dialog():
 
         # jazda automatyczna
         def autoMove(self):
+                threading.Thread(target=self.camera_auto).start()
                 self.ping("/auto")
+                return
 
         # koniec jazdy automatycznej
         def autoStop(self):
@@ -78,9 +83,8 @@ class Ui_Dialog():
         def runcamera(self):
 
             # zczytywanie zdjec
-            for i in range(0,self.ilosc_zdjec-1,1):
+            for i in range(0, self.ilosc_zdjec-1, 1):
             #path = os.path.abspath("E:/photos/photo" + str(number) + ".jpg") nie mam pendrive pod reka
-                time.sleep(1)
                 # print(self.__STATIC_ADDRESS + "/static/photo" + str(i))
                 # print("E:/photos/photo" + str(i) + ".jpg")
 
@@ -93,12 +97,22 @@ class Ui_Dialog():
                     print('raspberry nie odpowiada')
                     #return
             # po wczytaniu zdjec sklejamy
-            time.sleep(1)
-            stitch(self.ilosc_zdjec-1,self.numer_punktu)
-            self.numer_punktu=self.numer_punktu+1
+            self.numer_punktu = self.numer_punktu + 1
+            stitch(self.ilosc_zdjec - 1, self.numer_punktu)
+
             # wyswietlamy wynik (to samo co ViewPhoto)
             # self.view = View()
 
+        def camera_auto(self):
+            while True:
+                time.sleep(5)
+                try:
+                    numer_sfery = int(self.ping('/numersfery'))
+                except Exception as err:
+                    print(err)
+                    continue
+                if numer_sfery != self.numer_punktu:
+                    self.runcamera()
 
 
         ######################################################################
