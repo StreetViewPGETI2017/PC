@@ -86,8 +86,9 @@ class Ui_Dialog():
 
                 # czytamy zdjecia o nazwie photo1,photo2 .... photo15 - do ewentualnej zmiany
                 # zapis do folderu img - do zmiany na sciezke dysku zewn.
+                # edit:17.05 zapisz do folderu images
                 try:
-                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "img/" + str(i) + ".jpg" ) #<-path
+                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "images/" + str(i) + ".jpg" ) #<-path
                 except:
                     print('raspberry nie odpowiada')
                     #return
@@ -96,7 +97,7 @@ class Ui_Dialog():
             stitch(self.ilosc_zdjec-1,self.numer_punktu)
             self.numer_punktu=self.numer_punktu+1
             # wyswietlamy wynik (to samo co ViewPhoto)
-            self.view = View()
+            # self.view = View()
 
 
 

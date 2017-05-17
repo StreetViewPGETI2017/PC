@@ -9,7 +9,7 @@ def stitch(ilosc_zdjec,number_resoult):
 
     images=[]
     for i in range(0,ilosc_zdjec+1):
-        image = cv2.imread("../img/"+str(i)+".jpg")
+        image = cv2.imread("../images/"+str(i)+".jpg")
         if image is None:
             print('brak zdjec - sklejanie jest niemozliwe')
             return
@@ -104,7 +104,7 @@ def uberStitching(ilosc_zdjec,number_resoult):
     else:
         images = []
         for i in range(0, ilosc_zdjec + 1):
-            image = cv2.imread("../img/" + str(i) + ".jpg")
+            image = cv2.imread("../images/" + str(i) + ".jpg")
             if image is None:
                 print('brak zdjec - sklejanie jest niemozliwe')
                 return
