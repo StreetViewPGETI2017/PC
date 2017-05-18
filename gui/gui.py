@@ -11,7 +11,7 @@ import webbrowser
 import numpy as np
 import cv2 #pakiet opencv-python, opencv-contrib-python
 
-from images import icons_rc
+# from images import icons_rc
 # from stitch_images import stitch
 
 
@@ -261,6 +261,12 @@ class Ui_Dialog():
         def camera_auto(self):
             while True:
                 time.sleep(5)
+                try:
+                    fauto = int(self.ping('/flagaauto'))
+                except:
+                    print("zwiał")
+                if fauto == 0:
+                    break
                 try:
                     numer_sfery = int(self.ping('/numersfery'))
                 except Exception as err:
