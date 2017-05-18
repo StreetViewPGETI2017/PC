@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+import cv2 #pakiet opencv-python, opencv-contrib-python
 
 class stitchImages():
 
@@ -143,7 +143,4 @@ class stitchImages():
             result = cv2.resize(result, (3432, 1732), interpolation=cv2.INTER_CUBIC)
             cv2.imwrite("../streetViewProd/static_assets/result" + str(number_resoult) + ".jpg", result)
             cv2.imwrite("result_last.jpg", result)
-
-
-sklejacz = stitchImages()
-sklejacz.uberStitching(15, 1)
+            print("ok")
