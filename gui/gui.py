@@ -1,22 +1,21 @@
 import os
-import subprocess
 import sys
-import time
 import threading
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
+import time
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
-import webbrowser
-# from view import View
-from PC.images import icons_rc
-from PC.gui.stitch_images import stitchImages
+
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
+
+from images import icons_rc
+from stitch.stitch_images import stitchImages
 
 
 class Ui_Dialog():
 
         def __init__(self):
             # adres serwera
-            self.__STATIC_ADDRESS = "http://127.0.0.1:5000"  # tu trzeba zmienic
+            self.__STATIC_ADDRESS = "http://192.168.1.1:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 16
             self.numer_punktu = 0
             self.sklejacz = stitchImages()
