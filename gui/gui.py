@@ -96,9 +96,8 @@ class Ui_Dialog():
                     urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "images/" + str(i) + ".jpg" ) #<-path
                 except:
                     print('raspberry nie odpowiada' + str(i))
-                    #return
-            # po wczytaniu zdjec sklejamy
-            self.numer_punktu = self.numer_punktu + 1
+                    return
+            # po wczytaniu zdjec skleja
 
             self.sklejacz.uberStitching(self.ilosc_zdjec - 1, self.numer_punktu)
             try:
@@ -116,8 +115,9 @@ class Ui_Dialog():
                     numer_sfery = int(self.ping('/numersfery'))
                 except Exception as err:
                     print(err)
-                    continue
+                    return
                 if numer_sfery != self.numer_punktu:
+                    self.numer_punktu = self.numer_punktu + 1
                     self.runcamera()
 
 
