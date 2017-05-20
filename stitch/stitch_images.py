@@ -2,13 +2,13 @@ import numpy as np
 import cv2 #pakiet opencv-python, opencv-contrib-python
 
 class stitchImages():
-
+# proste sklejanie, przycina zdjęcia z obu stron, a potem skleja
     def stitch(self,ilosc_zdjec,number_resoult):
 
         ile = (360 / (ilosc_zdjec + 1))/ 54
         lewy = (1 - ile)/ 2
         prawy = 1 - lewy
-
+        #wczytywanie zdjęć
         images=[]
         for i in range(0,ilosc_zdjec+1):
             image = cv2.imread("../img/"+str(i)+".jpg")
@@ -17,46 +17,45 @@ class stitchImages():
                 return
             else:
                 images.append(image)
-
-        for i in range(0,ilosc_zdjec-1):
+        #przycinanie zdjęć
+        for i in range(0,ilosc_zdjec + 1):
             try:
                 #images[i] = images[i][:, int(0.1296296296 * images[i].shape[1]):int(0.8703703704 * images[i].shape[1])]
                 images[i] = images[i][:, int(lewy * images[i].shape[1]):int(prawy * images[i].shape[1])]
             except Exception as err:
                 print(err)
-
+        #złożenie dwóch pierwszych zdjęć
         result = np.concatenate((images[0], images[1]), axis=1)
-
+        #składanie reszty zdjęć
         for i in range(1,ilosc_zdjec):
             try:
                 result = np.concatenate((result, images[i+1]), axis=1)
 
             except Exception as err:
                 print(err)
-
+        # stworzenie czarnego paska
         x = result.shape[1]
         y = (x - result.shape[0])/4
-
         blackIm = self.create_blank(x,y)
-
+        # dostawienie czarnego paska na dole i u góry złożeonej panoramy
         result = np.concatenate((result, blackIm), axis=0)
         result = np.concatenate((blackIm, result), axis=0)
+        # przeskalowanie
         result = cv2.resize(result,(3432,1732), interpolation = cv2.INTER_CUBIC)
+        # zapis
         cv2.imwrite("../streetViewProd/static_assets/result"+str(number_resoult)+".jpg", result)
         cv2.imwrite("result_last.jpg", result)
         print("Sklejono: "+str(number_resoult))
         # cv2.showImage(result)
-
+# tworzenie czarnego obrazu o zadanych wymiarach
     def create_blank(self, width, height, rgb_color=(0, 0, 0)):
         image = np.zeros((int(height), int(width), 3), np.uint8)
         color = tuple(reversed(rgb_color))
         image[:] = color
         return image
-
+#
     def detect(self, image):
-        # wykrywanie punktów charakterystycznych
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+        # wykrywanie punktów charakterystycznych i funkcji lokalnych na obrazie(local features)
         descriptor = cv2.xfeatures2d.SIFT_create()
         (k, features) = descriptor.detectAndCompute(image, None)
 
@@ -65,15 +64,16 @@ class stitchImages():
         return k, features
 
     def match(self, kpA, kpB, featureA, featureB, ratio, reproj):
+        # dopasowanie dwóch wektrorów algorytmem k-NN
         matcher = cv2.BFMatcher()
         rawmatches = matcher.knnMatch(featureA, featureB, k=2)
         matches = []
-
+        # odsianie złych dopasowań
         for m in rawmatches:
             if len(m) == 2 and m[0].distance < m[1].distance * ratio:
                 matches.append((m[0].trainIdx, m[0].queryIdx))
-
-        if len(matches) > 2:
+        # wygenerowanie homografi(homography), trza najmniej 4 dopasowań
+        if len(matches) > 4:
             ptsA = np.float32([kpA[i] for (_, i) in matches])
             ptsB = np.float32([kpB[i] for (i, _) in matches])
 
@@ -98,11 +98,13 @@ class stitchImages():
         return result
 
     def uberStitching(self, ilosc_zdjec, number_resoult):
+        # sprawdzanie czy jest dość zdjęć by je łączyć po punktach charakterystycznych
         if ilosc_zdjec + 1 < 16:
             self.stitch(ilosc_zdjec, number_resoult)
             return
         else:
             images = []
+            # wczytywanie
             for i in range(0, ilosc_zdjec + 1):
                 image = cv2.imread("../img/" + str(i) + ".jpg")
                 if image is None:
@@ -110,6 +112,7 @@ class stitchImages():
                     return
                 else:
                     images.append(image)
+            # łączenie po 2 zdjęcia w jedno
             zlaczone = []
             for i in range((int)((ilosc_zdjec + 1) / 2)):
                 obrazki = (images[2 * i], images[2 * i + 1])
@@ -120,18 +123,18 @@ class stitchImages():
             ile = (360 / liczba) / 54
             lewy = (1 - ile) / 2
             prawy = 1 - lewy * 6
-
+            # przycinanie
             for i in range(0, liczba + 1):
                 try:
                     zlaczone[i] = zlaczone[i][:, int(lewy * zlaczone[i].shape[1]):int(prawy * zlaczone[i].shape[1])]
                 except Exception as err:
                     print(err)
-
+            # składanie
             result = np.concatenate((zlaczone[0], zlaczone[1]), axis=1)
 
             for i in range(1, liczba - 1):
                 result = np.concatenate((result, zlaczone[i + 1]), axis=1)
-
+            # czarny pasek
             x = result.shape[1]
             y = (x - result.shape[0]) / 4
 
@@ -139,8 +142,12 @@ class stitchImages():
 
             result = np.concatenate((result, blackIm), axis=0)
             result = np.concatenate((blackIm, result), axis=0)
-
+            # zapis
             result = cv2.resize(result, (3432, 1732), interpolation=cv2.INTER_CUBIC)
             cv2.imwrite("../streetViewProd/static_assets/result" + str(number_resoult) + ".jpg", result)
             cv2.imwrite("result_last.jpg", result)
-            print("ok")
+            #print("ok")
+
+
+# sklejacz = stitchImages()
+# sklejacz.uberStitching(15,1)

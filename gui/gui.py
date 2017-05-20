@@ -7,8 +7,8 @@ from urllib.request import urlopen, urlretrieve
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 
-from images import icons_rc
-from stitch.stitch_images import stitchImages
+#from images import icons_rc
+from PC.stitch.stitch_images import stitchImages
 
 
 class Ui_Dialog():
@@ -93,13 +93,16 @@ class Ui_Dialog():
                 # zapis do folderu img - do zmiany na sciezke dysku zewn.
                 # edit:17.05 zapisz do folderu images
                 try:
-                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "images/" + str(i) + ".jpg" ) #<-path
+                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "../img/" + str(i) + ".jpg" ) #<-path
                 except:
                     print('raspberry nie odpowiada' + str(i))
                     return
             # po wczytaniu zdjec skleja
-
-            self.sklejacz.uberStitching(self.ilosc_zdjec - 1, self.numer_punktu)
+            try:
+                self.sklejacz.uberStitching(self.ilosc_zdjec - 1, self.numer_punktu)
+            except:
+                print("słabe zdjęcia")
+                self.sklejacz.stitch(self.ilosc_zdjec - 1, self.numer_punktu)
             try:
                 self.ready()
             except:
