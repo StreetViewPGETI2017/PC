@@ -99,21 +99,24 @@ class stitchImages():
 # awaryjne sklejanie jakby się po punktach nie połączyło
     def emergencyStitching(self, images):
         image2, image1 = images  # w liście zdjęcia od lewej do prawej
-        wsp = 0.41667
-        lewa = (1 - wsp)/ 2
-        prawa = 1 - lewa * 6
-        try:
-            i1 = image1[:, 0:int(prawa * image2.shape[1])]
-        except Exception as err:
-            print(err)
-        try:
-            i2 = image2[:, int(lewa * image1.shape[1]):int(image1.shape[1])]
-            cv2.imwrite("result_l.jpg", image2)
-        except Exception as err:
-            print(err)
-        result = np.concatenate((i2, i1), axis=1)
+        # wsp = 0.41667
+        # lewa =  ((1 - wsp)/ 2)
+        # prawa = (1 - lewa)
+        # try:
+        #     i1 = image1[:, 0:int(prawa * image2.shape[1])]
+        # except Exception as err:
+        #     print(err)
+        # try:
+        #     i2 = image2[:, int(lewa * image1.shape[1]):int(image1.shape[1])]
+        #     cv2.imwrite("result_l.jpg", image2)
+        # except Exception as err:
+        #     print(err)
+        result = np.concatenate((image2, image1), axis=1)
         return result
 
+    def cut(self, image, lewa, prawa):
+        result = image[:, int(lewa * image.shape[1]):int(prawa * image.shape[1])]
+        return result
 
     def uberStitching(self, ilosc_zdjec, number_resoult):
         # sprawdzanie czy jest dość zdjęć by je łączyć po punktach charakterystycznych
@@ -122,9 +125,17 @@ class stitchImages():
             return
         else:
             images = []
+            liczba = int(ilosc_zdjec + 1)/2
+            ile = (360 / liczba) / 54
+            lewy = ((1 - ile) / 2)
+            prawy = 1 - lewy * 6
+            liczbap = ilosc_zdjec + 1
+            ilep = (360 / liczbap)/54
+            lewyp = ( (1 - ilep) / 2)
+            prawyp = 1 - lewyp
             # wczytywanie
             for i in range(0, ilosc_zdjec + 1):
-                image = cv2.imread("../img/" + str(i) + ".jpg")
+                image = cv2.imread("../img/raspzdjecia/" + str(i) + ".jpg")
                 if image is None:
                     print('brak zdjec - sklejanie jest niemozliwe')
                     return
@@ -136,26 +147,27 @@ class stitchImages():
                 obrazki = (images[2 * i], images[2 * i + 1])
                 try:
                     obrazek = self.stitching(obrazki)
+                    obrazek = self.cut(obrazek, lewy, prawy)
                 except Exception as eee:
-                    obrazek = self.emergencyStitching(obrazki)
+                    obrazki1 = self.cut(obrazki[0], lewyp, prawyp)
+                    obrazki2 = self.cut(obrazki[1], lewyp, prawyp)
+                    obrazek = self.emergencyStitching((obrazki1, obrazki2))
                 if obrazek is None:
-                    obrazek = self.emergencyStitching(obrazki)
+                    obrazki1 = self.cut(obrazki[0], lewyp, prawyp)
+                    obrazki2 = self.cut(obrazki[1], lewyp, prawyp)
+                    obrazek = self.emergencyStitching((obrazki1, obrazki2))
                 zlaczone.append(obrazek)
 
-            liczba = len(zlaczone)
-            ile = (360 / liczba) / 54
-            lewy = (1 - ile) / 2
-            prawy = 1 - lewy * 6
             # przycinanie
-            for i in range(0, liczba + 1):
-                try:
-                    zlaczone[i] = zlaczone[i][:, int(lewy * zlaczone[i].shape[1]):int(prawy * zlaczone[i].shape[1])]
-                except Exception as err:
-                    print(err)
+            # for i in range(0, liczba + 1):
+            #     try:
+            #         zlaczone[i] = zlaczone[i][:, int(lewy * zlaczone[i].shape[1]):int(prawy * zlaczone[i].shape[1])]
+            #     except Exception as err:
+            #         print(err)
             # składanie
             result = np.concatenate((zlaczone[0], zlaczone[1]), axis=1)
 
-            for i in range(1, liczba - 1):
+            for i in range(1, int(liczba) - 1):
                 result = np.concatenate((result, zlaczone[i + 1]), axis=1)
             # czarny pasek
             x = result.shape[1]
@@ -172,6 +184,6 @@ class stitchImages():
             #print("ok")
 
 
-# sklejacz = stitchImages()
-# sklejacz.uberStitching(15,5)
+sklejacz = stitchImages()
+sklejacz.uberStitching(15,5)
 # sklejacz.stitch(15,6)
