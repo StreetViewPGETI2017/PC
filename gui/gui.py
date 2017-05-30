@@ -7,8 +7,9 @@ from urllib.request import urlopen, urlretrieve
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 
-#from images import icons_rc
-from PC.stitch.stitch_images import stitchImages
+from map import Map
+from images import icons_rc
+from stitch.stitch_images import stitchImages
 
 
 class Ui_Dialog():
@@ -67,12 +68,12 @@ class Ui_Dialog():
                 self.ping("/pcready")
 
         # podglad zdjecia po sklejaniu, uruchomienie nowego skryptu odpowiedzialnego za wyswietlenie
-        def viewPhoto(self):
-            # self.view = View()
-            self.browser = QtWebEngineWidgets.QWebEngineView()
-            self.browser.load(
-                QtCore.QUrl.fromLocalFile(os.getcwd()[:-os.getcwd()[::-1].find('\\')] + 'streetViewProd\\index.html'))
-            self.browser.show()
+        def showMap(self):
+            try:
+                self.map = Map(self.__STATIC_ADDRESS)
+            except Exception as err:
+                print(err)
+
 
         # odpalanie streetView
         def viewStreetGUI(self):
@@ -93,7 +94,7 @@ class Ui_Dialog():
                 # zapis do folderu img - do zmiany na sciezke dysku zewn.
                 # edit:17.05 zapisz do folderu images
                 try:
-                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "../img/" + str(i) + ".jpg" ) #<-path
+                    urlretrieve(self.__STATIC_ADDRESS + "/static/" + str(i) + ".jpg", "../images/" + str(i) + ".jpg" ) #<-path
                 except:
                     print('raspberry nie odpowiada' + str(i))
                     return
@@ -153,9 +154,9 @@ class Ui_Dialog():
                 self.stop.setObjectName("stop")
 
                 # Przyciski od zewnetrznych skryptow
-                self.viewPhotos = QtWidgets.QPushButton(frame_2)
-                self.viewPhotos.setGeometry(QtCore.QRect(20, 180, 221, 61))
-                self.viewPhotos.setObjectName("viewPhotos")
+                self.viewMap = QtWidgets.QPushButton(frame_2)
+                self.viewMap.setGeometry(QtCore.QRect(20, 180, 221, 61))
+                self.viewMap.setObjectName("viewMap")
                 self.streetV = QtWidgets.QPushButton(frame_3)
                 self.streetV.setGeometry(QtCore.QRect(30, 30, 211, 111))
                 self.streetV.setObjectName("streetV")
@@ -164,7 +165,7 @@ class Ui_Dialog():
                 # laczenie przyciskow z akcja
 
                 self.auto_2.clicked.connect(self.autoMove)
-                self.viewPhotos.clicked.connect(self.viewPhoto)
+                self.viewMap.clicked.connect(self.showMap)
                 self.streetV.clicked.connect(self.viewStreetGUI)
                 self.stop.clicked.connect(self.autoStop)
                 up.clicked.connect(self.runup)
@@ -182,7 +183,7 @@ class Ui_Dialog():
                 # nadanie przyciskom tekst
                 Dialog.setWindowTitle(_translate("Dialog", "StreetView"))
                 self.auto_2.setText(_translate("Dialog", "AUTO"))
-                self.viewPhotos.setText(_translate("Dialog", "VIEW"))
+                self.viewMap.setText(_translate("Dialog", "Map"))
                 self.streetV.setText(_translate("Dialog", "StreetView"))
                 self.stop.setText(_translate("Dialog", "STOP"))
 

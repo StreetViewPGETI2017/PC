@@ -11,7 +11,7 @@ class stitchImages():
         #wczytywanie zdjęć
         images=[]
         for i in range(0,ilosc_zdjec+1):
-            image = cv2.imread("../img/"+str(i)+".jpg")
+            image = cv2.imread("../images/"+str(i)+".jpg")
             if image is None:
                 print('brak zdjec - sklejanie jest niemozliwe')
                 return
@@ -123,7 +123,7 @@ class stitchImages():
             prawyp = 1 - lewyp
             # wczytywanie
             for i in range(0, ilosc_zdjec + 1):
-                image = cv2.imread("../img/" + str(i) + ".jpg")
+                image = cv2.imread("../images/" + str(i) + ".jpg")
                 if image is None:
                     print('brak zdjec - sklejanie jest niemozliwe')
                     return
