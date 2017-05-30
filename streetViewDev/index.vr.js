@@ -15,7 +15,9 @@ import {
 export default class streetViewDev extends React.Component {
     constructor(){
         super();
-        this.state = {image:1};
+        this.state = {
+            image:0
+        };
         this.styles = StyleSheet.create({ 
             menu: { flex: 1, 
                    flexDirection: 'column', 
@@ -26,22 +28,19 @@ export default class streetViewDev extends React.Component {
             ,button: { 
                 margin: 0.05, 
                 height: 0.4, 
-                backgroundColor:"rgba(255,0,0,0.1)",
-                transform: [{translate: [0, 0, -5]}],
+                transform: [{translate: [0, 0, -8]}],
 
             }
             ,button2: { 
                 margin: 0.05, 
                 height: 0.4, 
-                backgroundColor:"rgba(0,255,0,0.1)",
-                transform: [{translate: [0, 0, 5]},{rotateY : -180}],
+                transform: [{translate: [0, 0, 8]},{rotateY : -180}],
 
                 
             }
             , text: { 
-                fontSize: 0.3, 
-                color:"#fff",
-                textAlign: 'center', 
+                width:1,
+                height:1,
             }, 
         
         });
@@ -60,7 +59,7 @@ export default class streetViewDev extends React.Component {
         console.log(this.state.image)
         this.setState(prevState=>{
             let newImage = prevState.image - 1;
-            if (newImage>0){
+            if (newImage>=0){
                 return {image:newImage}
             }
             else{
@@ -70,21 +69,44 @@ export default class streetViewDev extends React.Component {
         })
         console.log(this.state.image)
     }
+    displaymoveForward=()=>{
+    
+            return(
+                <VrButton style={this.styles.button} 
+                    onClick={() => this.moveForward()}> 
+   
+                    <Image
+                              style={this.styles.text}
+                              source={require('./forward.png')}
+                            />
+                    </VrButton>
+            );
+        
+    }
+    displaymoveBack=()=>{
+        if(this.state.image!==0){
+            return(
+                <VrButton  style={this.styles.button,this.styles.button2} 
+                onClick={() => this.moveBack()}> 
+                <Image
+                              style={this.styles.text}
+                              source={require('./forward.png')}
+                            />
+                </VrButton> 
+            );
+        }
+    }
+
+
   render() {
     return (
             <View>
-        <Pano source={asset(`result${this.state.image}.jpg`)}/>
-
-                <VrButton style={this.styles.button} 
-                onClick={() => this.moveForward()}> 
-                <Text style={this.styles.text}> 
-                    Do przodu! </Text> 
-                </VrButton>
-                <VrButton  style={this.styles.button,this.styles.button2} 
-                onClick={() => this.moveBack()}> 
-                <Text style={this.styles.text}> 
-                    Do tyłu! </Text> 
-                </VrButton> 
+        <Pano 
+            source={asset(`result${this.state.image}.jpg`)}
+            />
+                {this.displaymoveForward()}
+                {this.displaymoveBack()}
+                
 
       </View>
     );
@@ -92,3 +114,41 @@ export default class streetViewDev extends React.Component {
 };
 
 AppRegistry.registerComponent('streetViewDev', () => streetViewDev);
+
+
+
+
+
+//
+//
+//moveForward(){
+//        console.log(this.state.image)
+//        if(this.state.displaymoveForward-this.state.image!==0){
+//            this.setState(prevState=>{
+//                let newImage = prevState.image + 1;
+//                if(newImage){
+//                    return {
+//                        image:newImage
+//                }
+//            }})
+//        }
+//        console.log(this.state.image)
+//    }
+//    moveForwardCheck=()=>{
+//        fetch(`/static_assets/result${this.state.image+1}.jpg`).then((resp)=>{
+//            console.log(resp)
+//            if(resp.status == 200){
+//                this.setState((prevState)=>{
+//                return{
+//                    displaymoveForward: this.state.image+1,
+//                }
+//            })
+//            }else{
+//                console.log("404")
+//            }
+//        },(error) =>{
+//            console.log("error")
+//            console.log(resp)
+//        })
+//    }
+//    
