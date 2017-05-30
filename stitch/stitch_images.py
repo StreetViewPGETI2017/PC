@@ -99,21 +99,9 @@ class stitchImages():
 # awaryjne sklejanie jakby się po punktach nie połączyło
     def emergencyStitching(self, images):
         image2, image1 = images  # w liście zdjęcia od lewej do prawej
-        # wsp = 0.41667
-        # lewa =  ((1 - wsp)/ 2)
-        # prawa = (1 - lewa)
-        # try:
-        #     i1 = image1[:, 0:int(prawa * image2.shape[1])]
-        # except Exception as err:
-        #     print(err)
-        # try:
-        #     i2 = image2[:, int(lewa * image1.shape[1]):int(image1.shape[1])]
-        #     cv2.imwrite("result_l.jpg", image2)
-        # except Exception as err:
-        #     print(err)
         result = np.concatenate((image2, image1), axis=1)
         return result
-
+#funkcja do przycinania zdjęć
     def cut(self, image, lewa, prawa):
         result = image[:, int(lewa * image.shape[1]):int(prawa * image.shape[1])]
         return result
@@ -140,8 +128,10 @@ class stitchImages():
                     print('brak zdjec - sklejanie jest niemozliwe')
                     return
                 else:
+                    # zmniejszenie zdjęć i dodanie do listy
+                    image = cv2.resize(image, ((int)(0.7 * image.shape[1]), (int)(0.7 * image.shape[0])), interpolation=cv2.INTER_CUBIC)
                     images.append(image)
-            # łączenie po 2 zdjęcia w jedno
+            # łączenie po 2 zdjęcia w jedno( jak się da to po punktach wspólnych)
             zlaczone = []
             for i in range((int)((ilosc_zdjec + 1) / 2)):
                 obrazki = (images[2 * i], images[2 * i + 1])
@@ -157,13 +147,6 @@ class stitchImages():
                     obrazki2 = self.cut(obrazki[1], lewyp, prawyp)
                     obrazek = self.emergencyStitching((obrazki1, obrazki2))
                 zlaczone.append(obrazek)
-
-            # przycinanie
-            # for i in range(0, liczba + 1):
-            #     try:
-            #         zlaczone[i] = zlaczone[i][:, int(lewy * zlaczone[i].shape[1]):int(prawy * zlaczone[i].shape[1])]
-            #     except Exception as err:
-            #         print(err)
             # składanie
             result = np.concatenate((zlaczone[0], zlaczone[1]), axis=1)
 
@@ -181,7 +164,7 @@ class stitchImages():
             result = cv2.resize(result, (3432, 1732), interpolation=cv2.INTER_CUBIC)
             cv2.imwrite("../streetViewProd/static_assets/result" + str(number_resoult) + ".jpg", result)
             cv2.imwrite("result_last.jpg", result)
-            #print("ok")
+            print("sklejono")
 
 
 # sklejacz = stitchImages()
