@@ -16,7 +16,7 @@ class Ui_Dialog():
 
         def __init__(self):
             # adres serwera
-            self.__STATIC_ADDRESS = "http://192.168.1.1:5000"  # tu trzeba zmienic
+            self.__STATIC_ADDRESS = "http://192.168.137.213:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 16
             self.numer_punktu = 0
             self.sklejacz = stitchImages()
@@ -34,7 +34,7 @@ class Ui_Dialog():
                     print (error)
                     return 0
                 except:
-                    print("raspberry nie odpowiada :(")
+                    print("raspberry " + command)
                     return 0
         #######################do pingu##################################
         # wysyłanie pingu na serwer
@@ -58,7 +58,7 @@ class Ui_Dialog():
         # jazda automatyczna
         def autoMove(self):
                 threading.Thread(target=self.camera_auto).start()
-                self.ping("/auto")
+                self.ping("/auto_wall")
 
         # koniec jazdy automatycznej
         def autoStop(self):
@@ -120,8 +120,8 @@ class Ui_Dialog():
                 except Exception as err:
                     print(err)
                     return
-                if numer_sfery != self.numer_punktu:
-                    self.numer_punktu = self.numer_punktu + 1
+                if numer_sfery == self.numer_punktu + 1:
+                    self.numer_punktu = numer_sfery
                     self.runcamera()
 
 
