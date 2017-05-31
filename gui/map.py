@@ -30,7 +30,7 @@ class Map(QMainWindow):
     def paintEvent(self, *args, **kwargs):
         try:
             map = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=10.0)
-            map = map.read()  # trzeba potestowac jaki timeout bedzie ok
+            map = map.read().replace('0', ' ').replace('1', '#')  # trzeba potestowac jaki timeout bedzie ok
         except (HTTPError, URLError)  as error:
             print(error)
             return
