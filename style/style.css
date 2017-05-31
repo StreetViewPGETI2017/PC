@@ -19,7 +19,7 @@ QLabel{
 }
 #stop,
 #streetV,
-#viewPhotos,
+#viewMap,
 #auto_2{
 font-size:30px;
   background: #d93434;
@@ -29,7 +29,7 @@ font-size:30px;
 }
 #stop:hover,
 #streetV:hover,
-#viewPhotos:hover,
+#viewMap:hover,
 #auto_2:hover {
   background: #ff6161;
   background-image: linear-gradient(to bottom, #ff6161, #c94949);
