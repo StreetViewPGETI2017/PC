@@ -4,6 +4,8 @@ import threading
 import time
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen, urlretrieve
+import yaml
+from urllib.parse import urlencode
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 
@@ -58,7 +60,10 @@ class Ui_Dialog():
         # jazda automatyczna
         def autoMove(self):
                 threading.Thread(target=self.camera_auto).start()
-                self.ping("/auto_wall")
+                with open('auto_move_configuration.yaml') as file:
+                    config = yaml.load(file)
+                    payload = urlencode(config)
+                self.ping("/auto_wall?" + payload)
 
         # koniec jazdy automatycznej
         def autoStop(self):

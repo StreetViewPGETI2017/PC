@@ -18,7 +18,7 @@ class Map(QMainWindow):
         self.setGeometry(50, 50, 600, 600)
         self.setWindowTitle('Mapa')
         self.timer = QBasicTimer()
-        self.timer.start(10, self)
+        self.timer.start(10000, self)
         self.label = QLabel(self)
         self.label.setGeometry(0, 0, 600, 600)
         self.label.setFont(font)
