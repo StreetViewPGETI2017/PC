@@ -1,16 +1,13 @@
 # odleglosc po ktorej robot wykona zdjecia, w cm
-co_ile_sfera: 800
+co_ile_sfera: 500
 
 # w cm
-wielkosc_swiata: 1
+wielkosc_swiata: 6000
 
 #w wcm
-wielkosc_komorki: 1
+wielkosc_komorki: 100
 
 #w cm
-dystans_od_sciany:
-    srodek_pola: 1
-    szerokosc_pola: 1
+dystans_od_sciany: 60
 
-#
-algorytm: najlepszy
+
