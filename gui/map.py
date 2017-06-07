@@ -9,9 +9,9 @@ from PyQt5.QtWidgets import QWidget, QApplication
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Map(QMainWindow):
-    def __init__(self, __STATIC_ADDRESS):
+    def __init__(self, __STATIC_ADDRESS,wielkosc_mapy_Param):
             self.__STATIC_ADDRESS = __STATIC_ADDRESS
-            self.size = 200
+            self.size = wielkosc_mapy_Param
             self.iconSize = 3
             self.checkedNumber = 0
             self.wallNumber = 0
@@ -110,6 +110,7 @@ class Map(QMainWindow):
 
 
     def paintEvent(self, *args, **kwargs):
+        print(self.size)
         try:
             # zmienic na mapa.txt oraz url
             mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=5.0).read().decode()

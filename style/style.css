@@ -17,6 +17,7 @@ QLabel{
        color:white;
         font-size:15px;
 }
+#param,
 #stop,
 #streetV,
 #viewMap,
@@ -27,6 +28,7 @@ font-size:30px;
   border-radius: 16px;
   color: #ffffff;
 }
+#param:hover,
 #stop:hover,
 #streetV:hover,
 #viewMap:hover,
@@ -34,4 +36,11 @@ font-size:30px;
   background: #ff6161;
   background-image: linear-gradient(to bottom, #ff6161, #c94949);
   text-decoration: none;
+}
+QLabel{
+    color:white;
+    border:none;
+}
+QTextEdit{
+    border:none;
 }
