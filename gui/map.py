@@ -12,7 +12,7 @@ class Map(QMainWindow):
     def __init__(self, __STATIC_ADDRESS):
             self.__STATIC_ADDRESS = __STATIC_ADDRESS
             self.size = 200
-            self.iconSize = 5
+            self.iconSize = 3
             self.checkedNumber = 0
             self.wallNumber = 0
             self.cameraNumber = 0
@@ -112,11 +112,12 @@ class Map(QMainWindow):
     def paintEvent(self, *args, **kwargs):
         try:
             # zmienic na mapa.txt oraz url
-            mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=1.0).decode()
+            mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=5.0).read().decode()
             open('mapa.txt', 'w').write(mapa)
         except (HTTPError, URLError) as error:
             print(error)
-
+        except Exception as err:
+            print(err)
         except:
             print("raspberry nie odpowiada :(")
 

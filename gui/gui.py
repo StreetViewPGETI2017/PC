@@ -18,7 +18,7 @@ class Ui_Dialog():
 
         def __init__(self):
             # adres serwera
-            self.__STATIC_ADDRESS = "http://192.168.137.213:5000"  # tu trzeba zmienic
+            self.__STATIC_ADDRESS = "http://192.168.137.207:5000"  # tu trzeba zmienic
             self.ilosc_zdjec = 16
             self.numer_punktu = 0
             self.sklejacz = stitchImages()
