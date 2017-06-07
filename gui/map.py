@@ -61,13 +61,13 @@ class Map(QMainWindow):
 
 
         self.paintEventFT()
-        for x in range (7000):
+        for x in range (1000):
             self.wall = QtWidgets.QPushButton(self.frame)
             self.wall.setGeometry(QtCore.QRect(-10, 0, self.iconSize, self.iconSize))
             self.wall.setText("")
             self.wall.setObjectName("wall" + str(self.wallNumber))
             self.wallNumber += 1
-        for x in range(50):
+        for x in range(20):
             self.camera = QtWidgets.QLabel(self.frame)
             self.camera.setGeometry(QtCore.QRect(-10, 0, self.iconSize, self.iconSize))
             self.camera.setText("")

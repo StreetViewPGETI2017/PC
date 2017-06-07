@@ -149,8 +149,7 @@ class Ui_Dialog():
                 self.wielkosc_komorki_Param = int(self.wielkosc_komorki.toPlainText())
             if (len(self.dostans_od_sciany.toPlainText()) > 0):
                 self.dostans_od_sciany_Param = int(self.dostans_od_sciany.toPlainText())
-            if (len(self.wielkosc_mapy.toPlainText()) > 0):
-                self.wielkosc_mapy_Param = int(self.wielkosc_mapy.toPlainText())
+
             #print
             # print( self.co_ile_sfera_Param )
             # print( self.wielkosc_swiata_Param )
@@ -228,13 +227,20 @@ class Ui_Dialog():
                 self.label_5 = QtWidgets.QLabel(self.inputframe)
                 self.label_5.setGeometry(QtCore.QRect(10, 150, 100, 16))
                 self.label_5.setObjectName("label_5")
-                self.wielkosc_mapy = QtWidgets.QTextEdit(self.inputframe)
-                self.wielkosc_mapy.setGeometry(QtCore.QRect(140, 140, 100, 21))
-                self.wielkosc_mapy.setObjectName("wielkosc_mapy")
+                # self.wielkosc_mapy = QtWidgets.QTextEdit(self.inputframe)
+                # self.wielkosc_mapy.setGeometry(QtCore.QRect(140, 140, 100, 21))
+                # self.wielkosc_mapy.setObjectName("wielkosc_mapy")
 
                 self.param = QtWidgets.QPushButton(self.inputframe)
                 self.param.setGeometry(QtCore.QRect(290, 100, 221, 61))
                 self.param.setObjectName("param")
+
+                ###############################################################################################################
+                ### Wpisanie wart default
+                self.co_ile_sfera.setText(str(self.co_ile_sfera_Param))
+                self.wielkosc_swiata.setText(str(self.wielkosc_swiata_Param))
+                self.wielkosc_komorki.setText(str(self.wielkosc_komorki_Param))
+                self.dostans_od_sciany.setText(str(self.dostans_od_sciany_Param))
 
                 ############################EVENT##############################################################################
                 # laczenie przyciskow z akcja
@@ -267,7 +273,7 @@ class Ui_Dialog():
                 self.label_2.setText(_translate("Dialog", "wielkości świata "))
                 self.label_3.setText(_translate("Dialog", "wielkości komórki "))
                 self.label_4.setText(_translate("Dialog", "dystans_od_sciany"))
-                self.label_5.setText(_translate("Dialog", "wielkosc mapy"))
+                # self.label_5.setText(_translate("Dialog", "wielkosc mapy"))
 
 
 
