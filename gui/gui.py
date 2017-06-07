@@ -84,7 +84,8 @@ class Ui_Dialog():
                 self.map = Map(self.__STATIC_ADDRESS,self.wielkosc_mapy_Param)
             except Exception as err:
                 print(err)
-
+            except:
+                print("raspberry " + command)
 
         # odpalanie streetView
         def viewStreetGUI(self):
@@ -130,6 +131,9 @@ class Ui_Dialog():
                     numer_sfery = int(self.ping('/numersfery'))
                 except Exception as err:
                     print(err)
+                    return
+                except:
+                    print('overload')
                     return
                 if numer_sfery == self.numer_punktu + 1:
                     self.numer_punktu = numer_sfery
