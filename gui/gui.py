@@ -51,11 +51,11 @@ class Ui_Dialog():
 
         # jazda w lewo
         def runleft(self):
-                self.ping("/left")
+                self.ping("/q")
 
         # jazda w prawo
         def runright(self):
-                self.ping("/right")
+                self.ping("/p")
 
         # jazda automatyczna
         def autoMove(self):

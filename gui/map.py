@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Map(QMainWindow):
     def __init__(self, __STATIC_ADDRESS):
             self.__STATIC_ADDRESS = __STATIC_ADDRESS
-            self.size =200
+            self.size = 200
             self.iconSize = 5
             self.checkedNumber = 0
             self.wallNumber = 0
@@ -112,16 +112,20 @@ class Map(QMainWindow):
     def paintEvent(self, *args, **kwargs):
         try:
             # zmienic na mapa.txt oraz url
-            map = open("mapa2.txt","r") #urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=10.0)
-            map = map.read()
-        except (HTTPError, URLError)  as error:
+            mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=1.0).decode()
+            open('mapa.txt', 'w').write(mapa)
+        except (HTTPError, URLError) as error:
             print(error)
-            return
+
         except:
             print("raspberry nie odpowiada :(")
-            return
-        i =0
-        j =0
+
+        with open('mapa.txt') as f:
+            map = f.read()  # urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=10.0)
+
+
+        i = 0
+        j = 0
         for item in map:
             if(j==self.size):
                 i+=1
@@ -146,9 +150,8 @@ class Map(QMainWindow):
 
     def paintEventFT(self):
             try:
-                # zmienic na mapa.txt oraz url
-                map = open("mapa.txt","r") #urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=10.0)
-                map = map.read()
+                map = [
+                    [0 for _ in range(200)] for _ in range(200)]
             except (HTTPError, URLError)  as error:
                 print(error)
                 return
