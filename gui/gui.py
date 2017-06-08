@@ -27,7 +27,7 @@ class Ui_Dialog():
             self.wielkosc_swiata_Param = 6000
             self.wielkosc_komorki_Param = 100
             self.dostans_od_sciany_Param = 60
-            self.wielkosc_mapy_Param = 200
+            self.wielkosc_mapy_Param = int(self.wielkosc_swiata_Param/self.wielkosc_komorki_Param)
 
         def ilosc_zdjec_f(self):
             ilosc = self.ilosc_zdjec
@@ -145,8 +145,10 @@ class Ui_Dialog():
                 self.co_ile_sfera_Param = int(self.co_ile_sfera.toPlainText())
             if (len(self.wielkosc_swiata.toPlainText()) > 0):
                 self.wielkosc_swiata_Param = int(self.wielkosc_swiata.toPlainText())
+                self.wielkosc_mapy_Param = int(self.wielkosc_swiata_Param / self.wielkosc_komorki_Param)
             if (len(self.wielkosc_komorki.toPlainText()) > 0):
                 self.wielkosc_komorki_Param = int(self.wielkosc_komorki.toPlainText())
+                self.wielkosc_mapy_Param = int(self.wielkosc_swiata_Param / self.wielkosc_komorki_Param)
             if (len(self.dostans_od_sciany.toPlainText()) > 0):
                 self.dostans_od_sciany_Param = int(self.dostans_od_sciany.toPlainText())
 

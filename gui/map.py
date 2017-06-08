@@ -61,19 +61,19 @@ class Map(QMainWindow):
 
 
         self.paintEventFT()
-        for x in range (1000):
+        for x in range (self.size*5):
             self.wall = QtWidgets.QPushButton(self.frame)
             self.wall.setGeometry(QtCore.QRect(-10, 0, self.iconSize, self.iconSize))
             self.wall.setText("")
             self.wall.setObjectName("wall" + str(self.wallNumber))
             self.wallNumber += 1
-        for x in range(20):
+        for x in range(int(self.size/2)):
             self.camera = QtWidgets.QLabel(self.frame)
             self.camera.setGeometry(QtCore.QRect(-10, 0, self.iconSize, self.iconSize))
             self.camera.setText("")
             self.camera.setObjectName("camera" + str(self.cameraNumber))
             self.cameraNumber += 1
-        for x in range(1000):
+        for x in range(self.size*5):
             self.checked = QtWidgets.QToolButton(self.frame)
             self.checked.setGeometry(QtCore.QRect(-10 * self.iconSize, 0, self.iconSize, self.iconSize))
             self.checked.setText("")
@@ -111,10 +111,12 @@ class Map(QMainWindow):
 
     def paintEvent(self, *args, **kwargs):
         print(self.size)
+        changed = False
         try:
             # zmienic na mapa.txt oraz url
-            mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=5.0).read().decode()
+            mapa = urlopen(self.__STATIC_ADDRESS + '/static/mapa.txt', timeout=10.0).read().decode()
             open('mapa.txt', 'w').write(mapa)
+            changed = True
         except (HTTPError, URLError) as error:
             print(error)
         except Exception as err:
@@ -128,32 +130,39 @@ class Map(QMainWindow):
 
         i = 0
         j = 0
-        for item in map:
-            if(j==self.size):
-                i+=1
-                j=0
-            if(self.map[i][j] == "0" and item != "0"):
-                self.board[i][j] = item
-                if (item == "1"):
-                    objectO = self.findChild(QWidget, "wall" + str(self.wallNumber))
-                    objectO.move(j * self.iconSize, i*self.iconSize)
-                    self.wallNumber += 1
-                if (item == "9"):
-                    objectO = self.findChild(QWidget, "camera" + str(self.cameraNumber))
-                    objectO.move(j * self.iconSize, i*self.iconSize)
-                    self.cameraNumber += 1
-                if(item =="2"):
-                    objectO = self.findChild(QWidget, "checked" + str(self.checkedNumber))
-                    objectO.move(j * self.iconSize, i * self.iconSize)
-                    self.checkedNumber += 1
+        stopped = False
 
-            j+=1
-        self.map = self.board
+        if(changed==True):
+            for item in map:
+                if(j==self.size-1):
+                    i+=1
+                    j=0
+                    # print(i)
+                    if(i == self.size-1):
+                        stopped = True
+                        break
+                if(self.map[i][j] == "0" and item != "0" and stopped == False):
+                    self.board[i][j] = item
+                    if (item == "1"):
+                        objectO = self.findChild(QWidget, "wall" + str(self.wallNumber))
+                        objectO.move(j * self.iconSize, i*self.iconSize)
+                        self.wallNumber += 1
+                    if (item == "9"):
+                        objectO = self.findChild(QWidget, "camera" + str(self.cameraNumber))
+                        objectO.move(j * self.iconSize, i*self.iconSize)
+                        self.cameraNumber += 1
+                    if(item =="2"):
+                        objectO = self.findChild(QWidget, "checked" + str(self.checkedNumber))
+                        objectO.move(j * self.iconSize, i * self.iconSize)
+                        self.checkedNumber += 1
+
+                j+=1
+            self.map = self.board
 
     def paintEventFT(self):
             try:
                 map = [
-                    [0 for _ in range(200)] for _ in range(200)]
+                    [0 for _ in range(self.size-1)] for _ in range(self.size-1)]
             except (HTTPError, URLError)  as error:
                 print(error)
                 return
